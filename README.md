@@ -1,3 +1,18 @@
+## Prepare rclone
+Replace `DEEP-AIM-id` and `passwd` by real values from rclone.config in all places!!!
+
+# Prepare OIDC token
+```bash
+eval $(oidc-agent)
+oidc-gen
+	deep-aim
+	https://iam.deep-hybrid-datacloud.eu/
+	deep
+	aim
+	2
+oidc-token deep
+```
+
 ## Build the image
 Execute `build.sh` or 
 
