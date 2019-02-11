@@ -1,7 +1,9 @@
 ## Prepare rclone
-Replace `DEEP-AIM-id` and `passwd` by real values from rclone.config in all places!!!
+Replace `DEEP-AIM-id` and `passwd` by real values from `rclone.config` in all places!!!
 
-## Prepare OIDC token called `deep` in `./volume/.oidc-agent/`
+## Prepare OIDC token 
+The token is called `deep` in `./volume/.oidc-agent/`
+
 ```bash
 eval $(oidc-agent)
 oidc-gen
