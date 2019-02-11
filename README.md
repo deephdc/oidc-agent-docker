@@ -1,8 +1,12 @@
 ## Prepare rclone
 Replace `DEEP-AIM-id` and `passwd` by real values from `rclone.config` in all places!!!
+```bash
+	./volume/.config/rclone/rclone.config
+	./volume/workspace/run-mods.sh  	--> rclone ID+passwd
+```
 
 ## Prepare OIDC token 
-The token is called `deep` in `./volume/.oidc-agent/`
+The token is called `deep` loacated in `./volume/.oidc-agent/`
 
 ```bash
 eval $(oidc-agent)
@@ -105,7 +109,7 @@ Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
               }
           }
       ],
-      "endpoint": "mesos-lb.recas.ba.infn.it:10011",
+      "endpoint": "some_endpoint_IP:10011",
       "marathon_load_balancer_ips": [
           {
               "definition": false,
@@ -124,7 +128,7 @@ Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
 ## Access the endpoint in the browser
 
 ```
-http://mesos-lb.recas.ba.infn.it:10011
+http://some_endpoint_IP:10011
 ```
 
 ## Undeploy the app
