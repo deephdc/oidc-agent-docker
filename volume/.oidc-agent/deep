@@ -1,0 +1,8 @@
+eval $(oidc-agent)
+oidc-gen
+	deep-aim
+	https://iam.deep-hybrid-datacloud.eu/
+	deep
+	aim
+	2
+oidc-token deep
