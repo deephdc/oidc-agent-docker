@@ -2,7 +2,7 @@
 Replace `DEEP-AIM-id` and `passwd` by real values from `rclone.config` in all places!!!
 ```bash
 	./volume/.config/rclone/rclone.config
-	./volume/workspace/run-mods.sh  	--> rclone ID+passwd
+	./volume/workspace/run-mods.sh  
 ```
 
 ## Prepare OIDC token 
