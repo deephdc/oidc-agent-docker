@@ -1,24 +1,3 @@
-## Prepare rclone
-Replace `DEEP-AIM-id` and `passwd` by real values from `rclone.config` in all places!!!
-```bash
-	./volume/.config/rclone/rclone.config
-	./volume/workspace/run-mods.sh  
-```
-
-## Prepare OIDC token 
-The token is called `deep` loacated in `./volume/.oidc-agent/`
-
-```bash
-eval $(oidc-agent)
-oidc-gen
-	deep-aim
-	https://iam.deep-hybrid-datacloud.eu/
-	deep
-	aim
-	2
-oidc-token deep
-```
-
 ## Build the image
 Execute `build.sh` or 
 
@@ -40,6 +19,28 @@ Execute `run.sh` or
  /bin/bash
 ```
 
+## Prepare rclone
+Replace `DEEP-AIM-id` and `passwd` by your real values from `rclone.config` in all places!!!
+```bash
+	./volume/.config/rclone/rclone.config 
+	./volume/workspace/run-dogs.sh
+	./volume/workspace/run-mods.sh 
+```
+
+## Prepare OIDC token 
+Inside the container, create OIDC `deep` token (which will be located in `./volume/.oidc-agent/`) as follows:
+
+```bash
+eval $(oidc-agent)
+oidc-gen
+	deep-aim
+	https://iam.deep-hybrid-datacloud.eu/
+	deep
+	aim
+	2
+oidc-token deep
+```
+
 ## Start oidc-agent and load configuration
 Inside the container, execute the oidc-agent
 
@@ -54,6 +55,12 @@ and load configuration
 # oidc-add deep
 Enter encryption password for account config deep: 
 success
+```
+set the environment
+
+```bash
+# export ORCHENT_URL=https://paas.cloud.cnaf.infn.it/orchestrator
+# export ORCHENT_TOKEN=$(oidc-token deep)
 ```
 
 ## Deploy the app
@@ -93,20 +100,7 @@ Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
   {
       "Docker_host_publish_ports": [
           {
-              "definition": false,
-              "printable": true,
-              "value": {
-                  "protocol": {
-                      "definition": false,
-                      "printable": true,
-                      "value": "tcp"
-                  },
-                  "source": {
-                      "definition": false,
-                      "printable": true,
-                      "value": "5000"
-                  }
-              }
+		...
           }
       ],
       "endpoint": "some_endpoint_IP:10011",
@@ -114,14 +108,14 @@ Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
           {
               "definition": false,
               "printable": true,
-              "value": "mesos-lb.recas.ba.infn.it"
+              "value": "... some_url ..."
           }
       ]
   }
   links:
-    self [https://deep-paas.cloud.ba.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec]
-    resources [https://deep-paas.cloud.ba.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec/resources]
-    template [https://deep-paas.cloud.ba.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec/template]
+    self [https://some_paas_url/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec]
+    resources [https://some_paas_url/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec/resources]
+    template [https://some_paas_url/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec/template]
 
 ```
 
