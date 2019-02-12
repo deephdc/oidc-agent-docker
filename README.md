@@ -22,9 +22,9 @@ Execute `run.sh` or
 ## Prepare rclone
 Replace `DEEP-AIM-id` and `passwd` by your real values from `rclone.config` in all places!!!
 ```bash
-	./volume/.config/rclone/rclone.config 
-	./volume/workspace/run-dogs.sh
-	./volume/workspace/run-mods.sh 
+./volume/.config/rclone/rclone.config 
+./volume/workspace/run-dogs.sh
+./volume/workspace/run-mods.sh 
 ```
 
 ## Prepare OIDC token 
@@ -79,9 +79,9 @@ Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
   outputs: 
   {}
   links:
-    self [https://deep-paas.cloud.ba.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec]
-    resources [https://deep-paas.cloud.ba.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec/resources]
-    template [https://deep-paas.cloud.ba.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec/template]
+    self [https://paas.cloud.cnaf.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec]
+    resources [https://paas.cloud.cnaf.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec/resources]
+    template [https://paas.cloud.cnaf.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec/template]
 ```
 
 ## Monitor the deployment progress
