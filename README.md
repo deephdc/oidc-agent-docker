@@ -28,7 +28,7 @@ Inside the container, execute following command
 ## 4 *OIDC agent* configuration
 
 ### 4a) New configuration
-Inside the container, retrieve OIDC `deep` token. It will be saved in the mounted directory `./volume/.oidc-agent/` or `/root/.oidc-agent/` respectively
+Inside the container, register OIDC `deep-iam` client. Its configuration will be saved in the mounted directory `./volume/.oidc-agent/` or `/root/.oidc-agent/` respectively
 
 ```bash
 # oidc-gen
@@ -37,11 +37,29 @@ Inside the container, retrieve OIDC `deep` token. It will be saved in the mounte
 and use following inputs on request:
 
 ```
-deep-aim
-https://iam.deep-hybrid-datacloud.eu/
-deep
-aim
-2
+Enter short name for the account to configure: deep
+Enter optional additional client-name-identifier []: iam
+[1] https://iam.deep-hybrid-datacloud.eu/
+[2] https://iam-test.indigo-datacloud.eu/
+[3] https://iam.extreme-datacloud.eu/
+[4] https://b2access.eudat.eu/oauth2/
+[5] https://b2access-integration.fz-juelich.de/oauth2
+[6] https://unity.eudat-aai.fz-juelich.de/oauth2/
+[7] https://unity.helmholtz-data-federation.de/oauth2/
+[8] https://services.humanbrainproject.eu/oidc/
+[9] https://accounts.google.com/
+[10] https://aai.egi.eu/oidc/
+[11] https://aai-dev.egi.eu/oidc
+[12] https://login.elixir-czech.org/oidc/
+[13] https://oidc-kc.scc.kit.edu/auth/realms/kit/
+Issuer [https://iam.deep-hybrid-datacloud.eu/]: 1
+Space delimited list of scopes [openid profile offline_access]: openid profile offline_access
+Registering Client ...
+Generating account configuration ...
+accepted
+...
+Enter encryption password for account configuration 'deep': 
+Confirm encryption Password: 
 ```
 
 ### 4b) Existing configuration 
