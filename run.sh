@@ -3,7 +3,6 @@ docker run\
  --rm\
  -it\
  -v "$(pwd)"/volume/workspace:/srv/workspace\
- -v "$(cd ../oidc-agent-stevo/ && pwd)"/volume/.oidc-agent:/root/.oidc-agent\
- -v "$(cd ../oidc-agent-stevo/ && pwd)"/volume/.config:/root/.config\
+ -v "$(pwd)"/volume/.oidc-agent:/root/.oidc-agent\
  deep-job-starter\
  /bin/bash
