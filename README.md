@@ -1,11 +1,11 @@
-## Build the image
+## 1 Build the image
 Execute `build.sh` or 
 
 ```bash
 # docker build --rm -t deep-job-starter -f Dockerfile .
 ```
 
-## Create and execute the container
+## 2 Create and execute the container
 Execute `run.sh` or
 
 ```bash
@@ -14,60 +14,68 @@ Execute `run.sh` or
  -it\
  -v "$(pwd)"/volume/workspace:/srv/workspace\
  -v "$(pwd)"/volume/.oidc-agent:/root/.oidc-agent\
- -v "$(pwd)"/volume/.config:/root/.config\
  deep-job-starter\
  /bin/bash
 ```
 
-## Prepare rclone
-Replace `DEEP-AIM-id` and `passwd` by your real values from `rclone.config` in all places!!!
-```bash
-./volume/.config/rclone/rclone.config 
-./volume/workspace/run-dogs.sh
-./volume/workspace/run-mods.sh 
-```
-
-## Prepare OIDC token 
-Inside the container, create OIDC `deep` token (which will be located in `./volume/.oidc-agent/`) as follows:
-
-```bash
-eval $(oidc-agent)
-oidc-gen
-	deep-aim
-	https://iam.deep-hybrid-datacloud.eu/
-	deep
-	aim
-	2
-oidc-token deep
-```
-
-## Start oidc-agent and load configuration
-Inside the container, execute the oidc-agent
+## 3 Start the *OIDC agent*
+Inside the container, execute following command
 
 ```bash
 # eval `oidc-agent`
-Agent pid 12
 ```
 
-and load configuration
+## 4 *OIDC agent* configuration
+
+### 4a) New configuration
+Inside the container, retrieve OIDC `deep` token. It will be saved in the mounted directory `./volume/.oidc-agent/` or `/root/.oidc-agent/` respectively
+
+```bash
+# oidc-gen
+```
+
+and use following inputs on request:
+
+```
+deep-aim
+https://iam.deep-hybrid-datacloud.eu/
+deep
+aim
+2
+```
+
+### 4b) Existing configuration 
+Inside the container, check if the OIDC configuration exists in the `/root/.oidc-agent/` directory and load it
 
 ```bash
 # oidc-add deep
 Enter encryption password for account config deep: 
 success
 ```
-set the environment
+
+## 5 Configure *Orchent* and *rclone*
+Inside the container, set the environment variables in `/srv/workspace/env.sh`
 
 ```bash
-# export ORCHENT_URL=https://paas.cloud.cnaf.infn.it/orchestrator
-# export ORCHENT_TOKEN=$(oidc-token deep)
+#!/usr/bin/env bash
+
+export ORCHENT_URL="https://paas.cloud.cnaf.infn.it/orchestrator"
+export ORCHENT_TOKEN=$(oidc-token deep)
+export RCLONE_USER="..."
+export RCLONE_PASS="..."
 ```
 
-## Deploy the app
+and load it
+
+```bash
+source /srv/workspace/env.sh
+```
+
+## 6 Deploy the app
 
 ```bash
 # cd workspace
-# . ./run-mods.sh
+# ./run-mods.sh
 Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
   status: CREATE_IN_PROGRESS
   creation time: 2019-01-10T13:09+0000
@@ -84,7 +92,7 @@ Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
     template [https://paas.cloud.cnaf.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec/template]
 ```
 
-## Monitor the deployment progress
+## 7 Monitor the deployment progress
 
 ```bash
 # orchend depshow 11e914d8-ff58-297d-b51f-0242c04420ec
@@ -119,13 +127,13 @@ Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
 
 ```
 
-## Access the endpoint in the browser
+## 8 Access the endpoint in the browser
 
 ```
 http://some_endpoint_IP:10011
 ```
 
-## Undeploy the app
+## 9 Undeploy the app
 
 ```bash
 # orchent depdel 11e914d8-ff58-297d-b51f-0242c04420ec
