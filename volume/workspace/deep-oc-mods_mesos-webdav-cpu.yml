@@ -3,8 +3,9 @@ topology_template:
 
     docker_image:
       type: string
-      description: 'deephdc/deep-oc-mods'
+      description: docker image from Docker Hub to deploy
       required: yes
+      default: "deephdc/deep-oc-mods"
 
     mem_size:
       type: string
