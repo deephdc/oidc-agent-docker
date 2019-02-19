@@ -1,11 +1,11 @@
-## Build the image
+## 1 Build the image
 Execute `build.sh` or 
 
 ```bash
 # docker build --rm -t deep-job-starter -f Dockerfile .
 ```
 
-## Create and execute the container
+## 2 Create and execute the container
 Execute `run.sh` or
 
 ```bash
@@ -14,60 +14,86 @@ Execute `run.sh` or
  -it\
  -v "$(pwd)"/volume/workspace:/srv/workspace\
  -v "$(pwd)"/volume/.oidc-agent:/root/.oidc-agent\
- -v "$(pwd)"/volume/.config:/root/.config\
  deep-job-starter\
  /bin/bash
 ```
 
-## Prepare rclone
-Replace `DEEP-AIM-id` and `passwd` by your real values from `rclone.config` in all places!!!
-```bash
-./volume/.config/rclone/rclone.config 
-./volume/workspace/run-dogs.sh
-./volume/workspace/run-mods.sh 
-```
-
-## Prepare OIDC token 
-Inside the container, create OIDC `deep` token (which will be located in `./volume/.oidc-agent/`) as follows:
-
-```bash
-eval $(oidc-agent)
-oidc-gen
-	deep-aim
-	https://iam.deep-hybrid-datacloud.eu/
-	deep
-	aim
-	2
-oidc-token deep
-```
-
-## Start oidc-agent and load configuration
-Inside the container, execute the oidc-agent
+## 3 Start the *OIDC agent*
+Inside the container, execute following command
 
 ```bash
 # eval `oidc-agent`
-Agent pid 12
 ```
 
-and load configuration
+## 4 *OIDC agent* configuration
+
+### 4a) New configuration
+Inside the container, register OIDC `deep-iam` client. Its configuration will be saved in the mounted directory `./volume/.oidc-agent/` or `/root/.oidc-agent/` respectively
+
+```bash
+# oidc-gen
+```
+
+and use following inputs on request:
+
+```
+Enter short name for the account to configure: deep
+Enter optional additional client-name-identifier []: iam
+[1] https://iam.deep-hybrid-datacloud.eu/
+[2] https://iam-test.indigo-datacloud.eu/
+[3] https://iam.extreme-datacloud.eu/
+[4] https://b2access.eudat.eu/oauth2/
+[5] https://b2access-integration.fz-juelich.de/oauth2
+[6] https://unity.eudat-aai.fz-juelich.de/oauth2/
+[7] https://unity.helmholtz-data-federation.de/oauth2/
+[8] https://services.humanbrainproject.eu/oidc/
+[9] https://accounts.google.com/
+[10] https://aai.egi.eu/oidc/
+[11] https://aai-dev.egi.eu/oidc
+[12] https://login.elixir-czech.org/oidc/
+[13] https://oidc-kc.scc.kit.edu/auth/realms/kit/
+Issuer [https://iam.deep-hybrid-datacloud.eu/]: 1
+Space delimited list of scopes [openid profile offline_access]: openid profile offline_access
+Registering Client ...
+Generating account configuration ...
+accepted
+...
+Enter encryption password for account configuration 'deep': 
+Confirm encryption Password: 
+```
+
+### 4b) Existing configuration 
+Inside the container, check if the OIDC configuration exists in the `/root/.oidc-agent/` directory and load it
 
 ```bash
 # oidc-add deep
 Enter encryption password for account config deep: 
 success
 ```
-set the environment
+
+## 5 Configure *Orchent* and *rclone*
+Inside the container, set the environment variables in `/srv/workspace/env.sh`
 
 ```bash
-# export ORCHENT_URL=https://paas.cloud.cnaf.infn.it/orchestrator
-# export ORCHENT_TOKEN=$(oidc-token deep)
+#!/usr/bin/env bash
+
+export ORCHENT_URL="https://paas.cloud.cnaf.infn.it/orchestrator"
+export ORCHENT_TOKEN=$(oidc-token deep)
+export RCLONE_USER="..."
+export RCLONE_PASS="..."
 ```
 
-## Deploy the app
+and load it
+
+```bash
+source /srv/workspace/env.sh
+```
+
+## 6 Deploy the app
 
 ```bash
 # cd workspace
-# . ./run-mods.sh
+# ./run-mods.sh
 Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
   status: CREATE_IN_PROGRESS
   creation time: 2019-01-10T13:09+0000
@@ -84,7 +110,7 @@ Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
     template [https://paas.cloud.cnaf.infn.it/orchestrator/deployments/11e914d8-ff58-297d-b51f-0242c04420ec/template]
 ```
 
-## Monitor the deployment progress
+## 7 Monitor the deployment progress
 
 ```bash
 # orchend depshow 11e914d8-ff58-297d-b51f-0242c04420ec
@@ -119,13 +145,13 @@ Deployment [11e914d8-ff58-297d-b51f-0242c04420ec]:
 
 ```
 
-## Access the endpoint in the browser
+## 8 Access the endpoint in the browser
 
 ```
 http://some_endpoint_IP:10011
 ```
 
-## Undeploy the app
+## 9 Undeploy the app
 
 ```bash
 # orchent depdel 11e914d8-ff58-297d-b51f-0242c04420ec
