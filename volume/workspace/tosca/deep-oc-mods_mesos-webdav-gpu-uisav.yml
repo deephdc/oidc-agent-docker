@@ -3,7 +3,7 @@ topology_template:
 
     docker_image:
       type: string
-      description: 'deephdc/deep-oc-mods'
+      description: 'deephdc/deep-oc-mods:gpu'
       required: yes
 
     mem_size:
