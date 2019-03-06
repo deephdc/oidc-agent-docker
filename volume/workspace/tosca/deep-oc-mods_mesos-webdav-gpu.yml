@@ -76,7 +76,7 @@ topology_template:
       type: string
       description: default command to run
       required: yes
-      default: "deepaas-run --listen-ip=0.0.0.0"
+      default: "deepaas-run --listen-ip=0.0.0.0 --listen-port=$PORT0"
 
   node_templates:
     Docker:
@@ -117,6 +117,9 @@ topology_template:
           jupyterCONFIG_URL: {get_input: jupyter_config_url}
         labels:
           HAPROXY_GROUP: "external"
+        portDefinitions:
+        - port: 0
+          requirePorts: true
         priviliged: false
       requirements:
       - host:
