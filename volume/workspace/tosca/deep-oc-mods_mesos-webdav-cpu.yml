@@ -5,6 +5,7 @@ topology_template:
       type: string
       description: 'deephdc/deep-oc-mods'
       required: yes
+      default: "deephdc/deep-oc-mods"
 
     mem_size:
       type: string
