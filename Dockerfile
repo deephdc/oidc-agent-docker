@@ -17,7 +17,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 		gcc \
 		make \
 		xdg-utils \
-		lynx
+		lynx \
+		openssh-server \
+		sshpass
 
 WORKDIR /srv
 
